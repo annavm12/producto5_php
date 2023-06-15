@@ -1,0 +1,31 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    restart: always
+    ports: 
+     - 4306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: rocket
+      MYSQL_DATABASE: producto_5
+      MYSQL_USER: rocket
+      MYSQL_PASSWORD: rocket
+    volumes:
+      - ./mysql:/var/lib/mysql
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress
+    volumes:
+      - ./src/themes:/var/www/html/wp-content/themes
+      - ./src/plugins:/var/www/html/wp-content/plugins
+      - ./src/uploads:/var/www/html/wp-content/uploads
+    restart: always
+    ports:
+      - 8001:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: rocket
+      WORDPRESS_DB_NAME: producto_5
+
